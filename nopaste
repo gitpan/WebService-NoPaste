@@ -1,0 +1,12 @@
+#!/usr/bin/perl -w
+use WebService::NoPaste;
+WebService::NoPaste->process(
+    # These two are special...
+    host => 'http://rafb.net',
+    post_path => '/paste/paste.php',
+    # ...and the rest are directly passed as POST variables:
+    lang => 'Perl', # affects syntax highlighting in HTML view
+    nick => '',
+    desc => '',
+    cvt_tabs => 'No',
+);
