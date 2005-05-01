@@ -1,23 +1,50 @@
 package WebService::NoPaste;
-use strict;
-use warnings;
+use Spiffy 0.24 -Base;
 use LWP::UserAgent;
 use HTTP::Request::Common 'POST';
-our $VERSION = '0.01';
+use IO::All;
+use Clipboard;
+our $VERSION = '0.02';
 
-sub process {
-    my %args = %_;
-    my $host = delete $args{host} || 'http://rafb.net';
-    my $post_path = delete $args{post_path} || '/paste/paste.php';
-    print "Paste at will...\n";
-    my %data = (%args, text => join('', <STDIN>));
-    my $r = LWP::UserAgent->new->request(POST $host . $post_path, [%data]);
-    die "Didn't get a '302 Found'.  WebService::NoPaste was designed for paste CGI's that redirect on success, so maybe you're using a different kind (let me know if this is the case - rking\@panoptic.com).  Or, maybe there was an error.  Here's the response: \n" . $r->as_string
-        unless 302 == $r->code;
-    my $payload_path = $r->headers->header('Location');
-    $payload_path =~ s/\.html$// or die "That's strange ($payload_path)";
-    print "Paste successfully posted to:\n";
-    print "$host$payload_path.$_\n" for 'txt', 'html';
+sub new {
+    my %args = @_;
+    bless {
+        host => delete $args{host},
+        post_path => delete $args{post_path},
+        args => \%args,
+    }, $self
+}
+
+sub send {
+    my $text = shift;
+    my $r = LWP::UserAgent->new->request(
+        POST $self->{host} . $self->{post_path}, [
+            %{$self->{args}},
+            text => $text,
+        ]);
+    $self->response_die($r, "Didn't get a '302 Found'.") unless 302 == $r->code;
+    my $p = $r->headers->header('Location');
+    $p =~ s/\.html$// or $self->response_die($r, "Location looks strange: $p");
+    $self->{payload_path} = $p;
+}
+
+sub payload_urls {
+    map { $self->{host} . $self->{payload_path} . '.' . $_ } qw(txt html)
+}
+
+sub read_from_stdin {
+    print "Paste at will...\n" if -t STDIN;
+    io('-')->all
+}
+
+sub read_from_clipboard { Clipboard->paste }
+
+sub save_to_clipboard { Clipboard->copy($_[0]); }
+
+my $PLEASE_EMAIL = "WebService::NoPaste has only been tested with 'pastebot' brand paste servers, and even then only to a limited extent.  If you got this error unexpectedly, please let me know - rking\@panopic.com.";
+sub response_die {
+    my ($r, $reason) = @_;
+    die join "\n", $reason, $PLEASE_EMAIL, "The response was: " .  $r->as_string
 }
 
 1;
@@ -38,10 +65,6 @@ WebService::NoPaste - Post to Paste Web Pages
     have the ability to quickly change options from the command-line,
     your feedback would be appreciated.
 
-    (If you'd like to use the internal perl interface, just look at
-    C<nopaste>.  It would probably need rearranging to fit other needs,
-    so please let me know if you have plans.)
-
 =head1 DESCRIPTION
 
     When online chatting it is problematic to paste an entire 300 line
@@ -55,16 +78,13 @@ WebService::NoPaste - Post to Paste Web Pages
     web browser, load the page, and then paste.  Why use the mouse when
     you can use the keyboard? ;)
 
-    Note: It has only been tested against one kind of CGI, so email me
-    if doesn't work on your favorite server.
-
 =head1 CONFIGURATION
     
     Currently, you just edit "nopaste" itself to point it at a different
     server, to change languages (which only affects the way the HTML
     formatting syntax highlights), etc.
 
-    This is lame, I know.  But it's version 0.01.  If you'd like neater
+    This is lame, I know.  But it's early.  If you'd like neater
     configuration, email me, and I'll get right to it.
 
 =head1 AUTHOR

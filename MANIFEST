@@ -1,5 +1,11 @@
-t/compile.t
-lib/WebService/NoPaste.pm
+MANIFEST
+META.yml
+Makefile.PL
+README
+at/justprun
+at/plainrun
+at/xcliprun
+inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
 inc/Module/Install/Fetch.pm
@@ -8,8 +14,6 @@ inc/Module/Install/Metadata.pm
 inc/Module/Install/Scripts.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
-inc/Module/Install.pm
-Makefile.PL
-README
-MANIFEST
+lib/WebService/NoPaste.pm
 nopaste
+t/compile.t

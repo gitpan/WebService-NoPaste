@@ -1,3 +1,8 @@
+INSTAL
+    perl Makefile.PL && make && make install
+
+----
+
 NAME
 
     WebService::NoPaste - Post to Paste Web Pages
