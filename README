@@ -1,27 +1,27 @@
-INSTAL
-    perl Makefile.PL && make && make install
+INSTALL
+        perl Makefile.PL && make && make install
 
 ----
 
 NAME
-
-    WebService::NoPaste - Post to Paste Web Pages
+        WebService::NoPaste - Post to Paste Web Pages
 
 SYNOPSIS
-        # Interactively paste:
+        # Manually paste input, manually copy the result url:
         $ nopaste
 
-        # Instantly upload your passwd file for the whole world to see:
-        $ nopaste < /etc/passwd 
+        # Turbo mode: use clipboard as input, send, and then put the result
+        # URL back into the clipboard:
+        $ nopaste cp
 
-        Note: I am deliberating what the best args would be (currently it
-        takes none).  If during your use you find it annoying that you don't
-        have the ability to quickly change options from the command-line,
-        your feedback would be appreciated.
+        # Just take the input from the clipboard, but otherwise leave the
+        # clipboard alone:
+        $ nopaste c
 
-        (If you'd like to use the internal perl interface, just look at
-        C<nopaste>.  It would probably need rearranging to fit other needs,
-        so please let me know if you have plans.)
+        # Instantly upload your passwd file for the whole world to see, but
+        # at least you'll have the result URL conveniently in your
+        # clipboard.
+        $ nopaste p < /etc/passwd 
 
 DESCRIPTION
         When online chatting it is problematic to paste an entire 300 line
@@ -35,25 +35,22 @@ DESCRIPTION
         web browser, load the page, and then paste.  Why use the mouse when
         you can use the keyboard? ;)
 
-        Note: It has only been tested against one kind of CGI, so email me
-        if doesn't work on your favorite server.
-
 CONFIGURATION
         Currently, you just edit "nopaste" itself to point it at a different
         server, to change languages (which only affects the way the HTML
         formatting syntax highlights), etc.
 
-        This is lame, I know.  But it's version 0.01.  If you'd like neater
+        This is lame, I know.  But it's early.  If you'd like neater
         configuration, email me, and I'll get right to it.
 
 AUTHOR
-    Ryan King <rking@panoptic.com>
+        Ryan King <rking@panoptic.com>
 
 COPYRIGHT
-    Copyright (c) 2005. Ryan King. All rights reserved.
+        Copyright (c) 2005. Ryan King. All rights reserved.
 
-    This program is free software; you can redistribute it and/or modify it
-    under the same terms as Perl itself.
+        This program is free software; you can redistribute it and/or modify it
+        under the same terms as Perl itself.
 
-    See http://www.perl.com/perl/misc/Artistic.html
+        See http://www.perl.com/perl/misc/Artistic.html
 

@@ -4,7 +4,7 @@ use LWP::UserAgent;
 use HTTP::Request::Common 'POST';
 use IO::All;
 use Clipboard;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub new {
     my %args = @_;
@@ -48,22 +48,28 @@ sub response_die {
 }
 
 1;
+
 =head1 NAME 
 
-WebService::NoPaste - Post to Paste Web Pages
+    WebService::NoPaste - Post to Paste Web Pages
 
 =head1 SYNOPSIS
 
-    # Interactively paste:
+    # Manually paste input, manually copy the result url:
     $ nopaste
 
-    # Instantly upload your passwd file for the whole world to see:
-    $ nopaste < /etc/passwd 
+    # Turbo mode: use clipboard as input, send, and then put the result
+    # URL back into the clipboard:
+    $ nopaste cp
 
-    Note: I am deliberating what the best args would be (currently it
-    takes none).  If during your use you find it annoying that you don't
-    have the ability to quickly change options from the command-line,
-    your feedback would be appreciated.
+    # Just take the input from the clipboard, but otherwise leave the
+    # clipboard alone:
+    $ nopaste c
+
+    # Instantly upload your passwd file for the whole world to see, but
+    # at least you'll have the result URL conveniently in your
+    # clipboard.
+    $ nopaste p < /etc/passwd 
 
 =head1 DESCRIPTION
 
@@ -89,16 +95,16 @@ WebService::NoPaste - Post to Paste Web Pages
 
 =head1 AUTHOR
 
-Ryan King <rking@panoptic.com>
+    Ryan King <rking@panoptic.com>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005. Ryan King. All rights reserved.
+    Copyright (c) 2005. Ryan King. All rights reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
 
-See http://www.perl.com/perl/misc/Artistic.html
+    See http://www.perl.com/perl/misc/Artistic.html
 
 =cut
 # vi:tw=72
